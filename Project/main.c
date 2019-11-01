@@ -71,13 +71,9 @@ int main(void)
 			pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT, BOARD_BUTTON_PIN);
 			if (pin_state)
 			{
-				current_state = 5;
+				toggle();
+				current_state = 0;
 			}
-			break;
-
-		case 5:	// BUTTON PRESSED
-			toggle();
-			current_state = 0;
 			break;
 	}
   }
