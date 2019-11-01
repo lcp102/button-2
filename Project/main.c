@@ -34,52 +34,52 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-		switch(current_state)
-		{
-			case 0: //RESTART
-				current_state = 1;
-				break;
-			
-			case 1:	//START
-				pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT,BOARD_BUTTON_PIN);
-				if (pin_state == 0)
-				{
-					current_state = 2;
-				}
-				break;
-				
-			case 2: //SET TIMECOUNT
-				t0 = get_millis();
-				current_state = 3;
-				break;
-			
-			case 3:	//WAIT
-				pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT, BOARD_BUTTON_PIN);
-				if (pin_state)
-				{
-					current_state = 0;
-					break;
-				}
-				t1 = get_millis();
-				if ((t1 - t0) > DEBOUNCE_TIMEOUT)
-				{
-					current_state = 4;
-				}
-				break;
-				
-			case 4: //PRESS DETECT
-				pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT, BOARD_BUTTON_PIN);
-				if (pin_state)
-				{
-					current_state = 5;
-				}
-				break;
-				
-			case 5:	// BUTTON PRESSED
-				toggle();
+	switch(current_state)
+	{
+		case 0: //RESTART
+			current_state = 1;
+			break;
+
+		case 1:	//START
+			pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT,BOARD_BUTTON_PIN);
+			if (pin_state == 0)
+			{
+				current_state = 2;
+			}
+			break;
+
+		case 2: //SET TIMER
+			t0 = get_millis();
+			current_state = 3;
+			break;
+
+		case 3:	//WAIT
+			pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT, BOARD_BUTTON_PIN);
+			if (pin_state)
+			{
 				current_state = 0;
 				break;
-		}
+			}
+			t1 = get_millis();
+			if ((t1 - t0) > DEBOUNCE_TIMEOUT)
+			{
+				current_state = 4;
+			}
+			break;
+
+		case 4: //DETECTION
+			pin_state = GPIO_ReadInputDataBit(BOARD_BUTTON_PORT, BOARD_BUTTON_PIN);
+			if (pin_state)
+			{
+				current_state = 5;
+			}
+			break;
+
+		case 5:	// BUTTON PRESSED
+			toggle();
+			current_state = 0;
+			break;
+	}
   }
 }
 
